@@ -1,0 +1,393 @@
+/* ================== RESET & BODY ================== */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f5f7fa;
+}
+/* Bỏ gạch chân*/
+.option.white { 
+    text-decoration: none; 
+}
+/* ================== HEADER ================== */
+.header {
+  background-color: #ffffff;
+  width: 100%;           /* cố định theo thiết kế */
+  height: 60px;            /* cố định theo thiết kế */
+  padding: 15px 123px 20px 30px; /* top right bottom left */
+  display: flex;
+  align-items: center;
+  gap: 10px;               /* khoảng cách giữa các phần tử bên trong */
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;          /* căn giữa toàn bộ header nếu màn hình > 1440px */
+}
+.logo-link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Russo One', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1e73be;
+  text-decoration: none;
+  margin-top: -10px;
+}
+.logo-link img {
+  height: 40px;
+  width: auto;
+}
+.logo-link:hover {
+  color: #145a8d;
+}
+
+/* ================== TRANG CHỌN QUYỀN ================== */
+.role-page .main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 89px);
+}
+.role-page .card {
+  background-color: #85C6E8;
+  width: 571px;
+  height: 485px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.role-page .card-content {
+  width: 404px;
+  height: 399px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 30px;
+}
+.role-page .card-content h2 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  color: #ffffff;
+  text-align: center;
+  margin: 0;
+}
+.role-page .options {
+  display: grid;
+  grid-template-columns: repeat(2, 120px);
+  grid-template-rows: repeat(2, 120px);
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+.role-page .option {
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+.role-page .option.white {
+  background-color: #ffffff;
+  color: #1e73be;
+  border: 1px solid #ddd;
+}
+.role-page .option.white i {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+.role-page .option.blue {
+  background-color: #1e73be;
+}
+.role-page .option:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+/* ================== TRANG ĐĂNG NHẬP ================== */
+.login-page .main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 89px); /* trừ header */
+}
+
+.login-page .login-card {
+  background-color: #8ecbf7;
+  width: 430px;
+  padding: 40px 30px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.login-page .login-card h2 {
+  color: #fff;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.login-page .role-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  color: #0460B7;
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 6px 15px;
+  display: inline-block;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.login-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.login-page label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  text-align: left;
+}
+
+.login-page input {
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: none;
+  background: #fff;
+  font-size: 14px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ================== INPUT GROUP (mật khẩu có icon) ================== */
+.login-page .input-group {
+  position: relative;
+  width: 100%;
+}
+
+.login-page .input-group input {
+  padding-right: 40px; /* chừa chỗ cho icon */
+}
+
+.login-page .input-group .toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #0460B7;
+  cursor: pointer;
+}
+
+/* ================== EXTRA LINKS (login) ================== */
+.login-page .extra-links {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 100%;
+  text-align: right;
+  margin: 10px 0;
+}
+
+.login-page .extra-links a {
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+.login-page .extra-links a.register {
+  color: #1e73be; /* xanh */
+}
+
+.login-page .extra-links a.forgot {
+  color: #A7A7A7; /* xám */
+}
+
+/* ================== BUTTON ================== */
+.login-page button {
+  background: #0460B7;
+  color: #fff;
+  border: none;
+  padding: 12px 40px;
+  border-radius: 22px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  display: inline-block;
+  margin: 10px auto 0;
+  transition: background 0.3s;
+}
+
+.login-page button:hover {
+  background: #004099;
+}
+/* ================== TRANG ĐĂNG KÝ ================== */
+.register-page .main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 89px); /* trừ header */
+}
+
+.register-page .register-card {
+  background-color: #8ecbf7;
+  width: 360px;              
+  padding: 15px 15px;       
+  border-radius: 16px;       
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.register-page .register-card h2 {
+  color: #fff;
+  font-size: 24px;           /* nhỏ lại */
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.register-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;                 /* khoảng cách nhỏ hơn */
+}
+
+.register-page label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  text-align: left;
+}
+
+.register-page input {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: none;
+  background: #fff;
+  font-size: 13px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* input-group (password có icon mắt) */
+.register-page .input-group {
+  position: relative;
+  width: 100%;
+}
+
+.register-page .input-group input {
+  padding-right: 36px; /* chừa chỗ cho icon */
+}
+
+.register-page .input-group .toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #0460B7;
+  cursor: pointer;
+}
+
+/* nút đăng ký */
+.register-page button {
+  background: #0460B7;
+  color: #fff;
+  border: none;
+  padding: 12px 50px;       /* nhỏ hơn */
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;          /* nhỏ lại */
+  display: inline-block;
+  margin: 12px auto 0px;
+  transition: background 0.3s;
+}
+
+.register-page button:hover {
+  background: #004099;
+}
+/* ================== TRANG QUÊN MẬT KHẨU ================== */
+.forgot-page .main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 89px);
+}
+
+.forgot-page .forgot-card {
+  background-color: #8ecbf7;
+  width: 360px;
+  padding: 24px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.forgot-page .forgot-card h2 {
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.forgot-page .forgot-card .desc {
+  font-size: 13px;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.forgot-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.forgot-page label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  text-align: left;
+}
+
+.forgot-page input {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: none;
+  background: #fff;
+  font-size: 13px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.forgot-page button {
+  background: #0460B7;
+  color: #fff;
+  border: none;
+  padding: 10px 100px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  margin-top: 8px;
+  margin: 12px auto 0px;
+  transition: background 0.3s;
+}
+
+.forgot-page button:hover {
+  background: #004099;
+}
