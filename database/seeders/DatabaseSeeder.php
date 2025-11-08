@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Admin; // Import the Admin model
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -16,15 +17,29 @@ class DatabaseSeeder extends Seeder
      * */
         public function run(): void
     {
-        DB::table('users')->insert([
-            'fullname' => 'Nguyen Van A',
-            'username' => 'user123',
-            'password' => Hash::make('123456'),
+        $this->call([
+            BusSeeder::class,
+            BusRouteSeeder::class,
+            MetroBusRouteSeeder::class,
         ]);
-        DB::table('admins')->insert([
 
-            'username' => 'admin123',
-            'password' => Hash::make('admin111'),
-        ]);
+        // Create a default user if one doesn't exist
+        User::firstOrCreate(
+            ['username' => 'user123'],
+            [
+                'fullname' => 'Nguyen Van A',
+                'password' => Hash::make('123456'),
+                'is_verified' => true, // Set the user as verified
+            ]
+        );
+
+        // Create a default admin if one doesn't exist
+        Admin::firstOrCreate(
+            ['username' => 'admin123'],
+            [
+                'password' => Hash::make('admin111'),
+            ]
+        );
     }
 }
+?>

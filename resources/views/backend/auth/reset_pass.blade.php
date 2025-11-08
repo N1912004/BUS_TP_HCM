@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Đổi mật khẩu</title>
-  <link rel="stylesheet" href="backend/css/styles.css">
+  <link rel="stylesheet" href="backend/css/style_login.css">
 </head>
 <body class="forgot-page">
   <!-- Header -->
   <header class="header">
     <div class="logo">
-      <a href="index.html" class="logo-link">
+      <a href="roles" class="logo-link">
         <img src="backend/img/logo/logo.png" alt="BusGo HCM Logo">
         <span>BusGo HCM</span>
       </a>

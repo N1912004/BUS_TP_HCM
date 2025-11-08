@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký - Người dùng</title>
-    <link rel="stylesheet" href="backend/css/styles.css">
+    <link rel="stylesheet" href="backend/css/style_login.csss">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -14,7 +14,7 @@
     <!-- Header -->
     <header class="header">
         <div class="logo">
-            <div class="logo-link">
+            <div href="roles"  class="logo-link">
                 <img src="backend/img/logo/logo.png" alt="BusGo HCM Logo">
                 <span>BusGo HCM</span>
             </div>

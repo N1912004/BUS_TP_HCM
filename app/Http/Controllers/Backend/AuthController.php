@@ -9,6 +9,7 @@ use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log; // Import the Log facade
 
 class AuthController extends Controller
 {
@@ -16,7 +17,7 @@ class AuthController extends Controller
     public function __construct() {}
     public function index()
     {
-        return view('backend.auth.Roles');
+        return view('backend.auth.roles');
     }
     public function  dashboard_user()
     {
@@ -39,14 +40,29 @@ class AuthController extends Controller
 
         ];
 
+        Log::info('Attempting user login with credentials:', $credentials);
 
-        if (Auth::attempt($credentials)) {
+        $user = User::where('username', $credentials['username'])->first();
 
-            echo "Đăng nhập thành công";
-            die();
+        if (!$user) {
+            Log::warning('User not found for username: ' . $credentials['username']);
+            return redirect()->route('auth.dashboard_user')->with('error', 'Tên đăng nhập hoặc mật khẩu không đúng');
         }
 
-        return redirect()->route('auth.dashboard_user')->with('error', 'Tên đăng nhập hoặc mật khẩu không đúng');
+        if (Hash::check($credentials['password'], $user->password)) {
+            Auth::login($user); // Manually log in the user
+            Log::info('User authenticated successfully via manual hash check. User ID: ' . $user->id . ', is_verified: ' . $user->is_verified);
+            if ($user->is_verified) {
+                return redirect()->route('user.map_route');
+            } else {
+                Auth::logout();
+                Log::warning('User not verified. Logging out.');
+                return redirect()->route('auth.dashboard_user')->with('error', 'Tài khoản của bạn chưa được xác minh.');
+            }
+        } else {
+            Log::warning('Password mismatch for username: ' . $credentials['username']);
+            return redirect()->route('auth.dashboard_user')->with('error', 'Tên đăng nhập hoặc mật khẩu không đúng');
+        }
     }
 
 
@@ -62,8 +78,7 @@ class AuthController extends Controller
 
         if (Auth::guard('admin')->attempt($credentials)) {
 
-            echo "Đăng nhập thành công admin";
-            die();
+            return view('backend.layouts.app');
         }
         return redirect()->route('auth.dashboard_admin')->with('error', 'Tên đăng nhập hoặc mật khẩu không đúng');
     }
@@ -71,6 +86,7 @@ class AuthController extends Controller
     public function dashboard_admin()
     {
         return view('backend.auth.login_ad_bus');
+       
     }
 
 
@@ -91,6 +107,7 @@ class AuthController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'is_verified' => false, // Set to false by default
         ]);
 
         return redirect()->route('auth.dashboard_user')->with('success', 'Đăng ký thành công!');

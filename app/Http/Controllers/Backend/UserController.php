@@ -12,5 +12,9 @@ class UserController extends Controller
     {
         
     }
-   
+
+    public function showUserMap()
+    {
+        return view('backend.user.user_map');
+    }
 }
