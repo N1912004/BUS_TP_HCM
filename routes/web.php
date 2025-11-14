@@ -4,7 +4,7 @@ use App\Http\Controllers\Backend\AuthController;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\App;
-
+use App\Http\Controllers\Backend\BusController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -59,7 +59,6 @@ Route::get('/ping', function () {
 });
 
 use App\Http\Controllers\Backend\UserController;
-use App\Http\Controllers\Backend\BusController;
 use App\Http\Controllers\Backend\BusRouteController; // Import the BusRouteController
 
 // Route::get('/user/map', [UserController::class, 'showUserMap'])->name('user.map');
@@ -73,8 +72,16 @@ Route::get('/busroutes', [BusRouteController::class, 'index'])->name('admin.busr
 //     return view('backend.user.bus_dashboard');
 // })->name('user.bus_dashboard');
 
+Route::post('/api/select-city', [BusController::class, 'selectCity'])
+    ->name('api.select_city')
+    ->middleware('auth'); // Thêm middleware auth vì đây là chức năng của người dùng đã đăng nhập
 Route::get('/bus-map', function () {
     return view('backend.user.user_map');
   })->name('user.bus_map');
-  
+Route::post('/api/find-route', [BusController::class, 'findRoute'])
+    ->name('api.find_route')
+    ->middleware('auth');
+Route::post('/api/nearly-route', [BusController::class, 'nearlyRoute'])
+    ->name('api.nearly_route')
+    ->middleware('auth');
   Route::get('/admin/buses/{bus}/coordinates', [App\Http\Controllers\Backend\BusController::class, 'getCoordinates'])->name('admin.buses.coordinates');
