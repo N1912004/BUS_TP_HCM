@@ -11,7 +11,6 @@ class UserPageTest extends TestCase
 {
     use RefreshDatabase;
 
-    // Biến để lưu trữ người dùng mẫu
     protected $user;
 
     protected function setUp(): void
