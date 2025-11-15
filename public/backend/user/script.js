@@ -577,6 +577,7 @@ function showRouteCard(route) {
 
 
     document.addEventListener('DOMContentLoaded', function() {
+        initializeMap(); // Initialize map immediately on DOMContentLoaded
         currentCityName = window.translations['map_route.city_name']; // Initialize here
         const tabSearch = document.getElementById("tab-search");
         const tabRoute = document.getElementById("tab-route");
@@ -607,6 +608,7 @@ function showRouteCard(route) {
         });
         // Re-render the full list of bus routes for the search tab
         renderList();
+        map.invalidateSize(); // Ensure map resizes correctly
     });
 
     tabRoute.addEventListener("click", () => {
@@ -617,10 +619,11 @@ function showRouteCard(route) {
         searchRoutesTabContent.classList.add("hidden");
         nearbyRoutesTabContent.classList.add("hidden");
         routeDetailView.classList.add('hidden');
-        setTimeout(initializeMap, 100);
+        // setTimeout(initializeMap, 100); // Map is already initialized
         busStopMarkers.clearLayers();
         clearAllPolylines(); // Clear all polylines when switching tabs
         // Routing control will be handled by the find route button itself
+        map.invalidateSize(); // Ensure map resizes correctly
     });
 
     tabNearbyRoutes.addEventListener("click", () => {
@@ -631,7 +634,7 @@ function showRouteCard(route) {
         searchRoutesTabContent.classList.add("hidden");
         findRouteTabContent.classList.add("hidden");
         routeDetailView.classList.add('hidden');
-        setTimeout(initializeMap, 100);
+        // setTimeout(initializeMap, 100); // Map is already initialized
         busStopMarkers.clearLayers(); // Clear nearby stop markers
         clearAllPolylines(); // Clear all polylines before potentially drawing new ones
         if (routingControl) { // Clear routing control if active
@@ -649,6 +652,7 @@ function showRouteCard(route) {
             fetchNearbyBusRoutes(latlng.lat, latlng.lng);
             fetchNearbyBusStops(latlng.lat, latlng.lng); // Add this line
         }
+        map.invalidateSize(); // Ensure map resizes correctly
     });
 
         // Check URL for tab parameter on page load
@@ -658,7 +662,7 @@ function showRouteCard(route) {
         if (activeTab === 'route') {
             tabRoute.click(); // Simulate click to activate route tab and initialize map
         } else if (activeTab === 'nearby-stops') {
-            tabNearbyStops.click(); // Simulate click to activate nearby stops tab
+            tabNearbyRoutes.click(); // Simulate click to activate nearby stops tab
         }
         else {
             tabSearch.click(); // Default to search tab
@@ -941,66 +945,6 @@ function showRouteCard(route) {
                 }
             }
         });
+
+        // User dropdown logic (now handled by Bootstrap)
     });
-    //   try {
-    //     const response = await fetch(`${window.AppBaseUrl}/api/bus-stops/nearby?lat=${lat}&lon=${lon}`);
-    //     if (!response.ok) {
-    //       throw new Error(`HTTP error! status: ${response.status}`);
-    //     }
-    //     const data = await response.json();
-    //     console.log('Fetched nearby bus stops:', data);
-    //     renderNearbyBusStops(data);
-    //     displayBusStopMarkers(data);
-    //   } catch (error) {
-    //     console.error('Error fetching nearby bus stops:', error);
-    //     document.getElementById('nearby-stops-list').innerHTML = '<li>Không thể tải trạm dừng gần đây.</li>';
-    //   }
-    // }
-
-    // This function is no longer needed as nearby bus stops are handled by fetchNearbyBusRoutes
-    // function renderNearbyBusStops(stops) {
-    //   const nearbyStopsList = document.getElementById('nearby-stops-list');
-    //   nearbyStopsList.innerHTML = '';
-    //   if (stops.length === 0) {
-    //     nearbyStopsList.innerHTML = '<li>Không tìm thấy trạm dừng nào gần đây.</li>';
-    //     return;
-    //   }
-
-    //   stops.forEach(stop => {
-    //     const li = document.createElement('li');
-    //     li.className = 'bus-route-item'; // Reusing existing style for list items
-    //     li.innerHTML = `
-    //       <div class="icon"><i class="fas fa-map-marker-alt"></i></div>
-    //       <div class="details">
-    //         <div class="route-number">${stop.name}</div>
-    //         <div class="route-info">${stop.address || 'Địa chỉ không xác định'}</div>
-    //       </div>
-    //     `;
-    //     li.onclick = () => {
-    //       map.setView([stop.latitude, stop.longitude], 17); // Zoom to the selected stop
-    //       // Optionally highlight the marker
-    //     };
-    //     nearbyStopsList.appendChild(li);
-    //   });
-    // }
-
-    // This function is no longer needed as nearby bus stops are handled by fetchNearbyBusRoutes
-    // function displayBusStopMarkers(stops) {
-    //   if (!map) {
-    //     console.error('Map is not initialized. Cannot display bus stop markers.');
-    //     return;
-    //   }
-
-    //   // Clear existing bus stop markers
-    //   busStopMarkers.clearLayers();
-
-    //   stops.forEach(stop => {
-    //     const marker = L.marker([stop.latitude, stop.longitude]).addTo(busStopMarkers);
-    //     marker.bindPopup(`<b>${stop.name}</b><br>${stop.address || ''}`);
-    //   });
-
-    //   busStopMarkers.addTo(map);
-    //   if (stops.length > 0) {
-    //     map.fitBounds(busStopMarkers.getBounds(), { padding: [50, 50] });
-    //   }
-    // }

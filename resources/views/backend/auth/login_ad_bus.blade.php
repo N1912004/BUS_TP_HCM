@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập - Admin</title>
-    <link rel="stylesheet" href="{{ asset('backend/css/style_login.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/style.css') }}">
     <!-- Font Awesome để dùng icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -14,9 +14,9 @@
     <!-- Header -->
     <header class="header">
         <div class="logo">
-            <a class="logo-link">
+            <a href=""     class="logo-link">
                 <!-- nhớ đổi sang đường dẫn tương đối images/logo.png -->
-                <img src="{{ asset('backend/img/logo/logo.png') }}" alt="BusGo HCM Logo">
+                <img src="{{ asset('backend/logo/logo.png') }}" alt="BusGo HCM Logo">
                 <span>BusGo HCM</span>
             </a>
         </div>

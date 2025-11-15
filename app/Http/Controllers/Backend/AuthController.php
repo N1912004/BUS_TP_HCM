@@ -8,6 +8,9 @@ use App\Http\Requests\AuthRequest;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\BusRoute; // Import the BusRoute model
+use App\Models\Bus; // Import the Bus model
+use App\Models\Admin; // Import the Admin model
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log; // Import the Log facade
 
@@ -19,7 +22,7 @@ class AuthController extends Controller
     {
         return view('backend.auth.roles');
     }
-    public function  dashboard_user()
+    public function  showLoginUserForm()
     {
         return view('backend.auth.login_user_bus');
     }
@@ -29,47 +32,48 @@ class AuthController extends Controller
     }
 
 
-    public function  login_user(AuthRequest $request)
-    {
+   public function login_user(AuthRequest $request)
+{
+    $credentials = $request->only('username', 'password');
 
-        //lấy dữ liệu từ form
-        $credentials = [
-            'username' => $request->input('username'),
-            'password' => $request->input('password')
+    Log::info('Attempting user login with credentials:', ['username' => $credentials['username']]);
 
-
-        ];
-
-        Log::info('Attempting user login with credentials:', $credentials);
-
-        $user = User::where('username', $credentials['username'])->first();
-
-        if (!$user) {
-            Log::warning('User not found for username: ' . $credentials['username']);
-            return redirect()->route('auth.dashboard_user')->with('error', 'Tên đăng nhập hoặc mật khẩu không đúng');
-        }
-
-        if (Hash::check($credentials['password'], $user->password)) {
-            Auth::login($user); // Manually log in the user
-            Log::info('User authenticated successfully via manual hash check. User ID: ' . $user->id . ', is_verified: ' . $user->is_verified);
-            if ($user->is_verified) {
-                return redirect()->route('user.map_route');
-            } else {
-                Auth::logout();
-                Log::warning('User not verified. Logging out.');
-                return redirect()->route('auth.dashboard_user')->with('error', 'Tài khoản của bạn chưa được xác minh.');
-            }
-        } else {
-            Log::warning('Password mismatch for username: ' . $credentials['username']);
-            return redirect()->route('auth.dashboard_user')->with('error', 'Tên đăng nhập hoặc mật khẩu không đúng');
-        }
+    $user = User::where('username', $credentials['username'])->first();
+    if (!$user) {
+        Log::warning('User not found for username: ' . $credentials['username']);
+        return redirect()->route('auth.dashboard_user')->with('error', 'Tên đăng nhập hoặc mật khẩu không đúng');
     }
+
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate(); // ✅ quan trọng
+        $user = Auth::user();
+        Log::info('User authenticated successfully. User ID: ' . $user->id . ', is_verified: ' . $user->is_verified);
+
+        if ($user->is_verified) {
+            return redirect()->route('user.map_route');
+        } else {
+            Auth::logout();
+            $request->session()->invalidate(); 
+            $request->session()->regenerateToken();
+            Log::warning('User not verified. Logging out.');
+            return redirect()->route('auth.dashboard_user')->with('error', 'Tài khoản của bạn chưa được xác minh.');
+        }
+    } else {
+        Log::warning('Password mismatch for username: ' . $credentials['username']);
+        return redirect()->route('auth.dashboard_user')->with('error', 'Tên đăng nhập hoặc mật khẩu không đúng');
+    }
+}
+
 
 
     // Xử lý phần đăng nhập cho admin
-    public function  login_admin(AuthRequest $request)
+    public function showLoginAdminForm()
     {
+        return view('backend.auth.login_ad_bus');
+    }
 
+    public function login_admin(AuthRequest $request)
+    {
         //lấy dữ liệu từ form
         $credentials = [
             'username' => $request->input('username'),
@@ -77,16 +81,20 @@ class AuthController extends Controller
         ];
 
         if (Auth::guard('admin')->attempt($credentials)) {
-
-            return view('backend.layouts.app');
+            $routes = BusRoute::paginate(10); // Fetch bus routes with pagination
+            return redirect()->route('auth.dashboard_admin'); // Redirect to admin dashboard after successful login
         }
-        return redirect()->route('auth.dashboard_admin')->with('error', 'Tên đăng nhập hoặc mật khẩu không đúng');
+        return redirect()->route('auth.loginadmin_get')->with('error', 'Tên đăng nhập hoặc mật khẩu không đúng');
     }
 
     public function dashboard_admin()
     {
-        return view('backend.auth.login_ad_bus');
-       
+        $totalRoutes = BusRoute::count();
+        $totalBuses = Bus::count();
+        $totalUsers = User::count();
+        $totalDrivers = Admin::count(); // Assuming 'Admin' model represents drivers for now
+
+        return view('backend.admin.index_admin', compact('totalRoutes', 'totalBuses', 'totalUsers', 'totalDrivers'));
     }
 
 
@@ -114,16 +122,16 @@ class AuthController extends Controller
     }
 
     // xử lý log out
-    // public function logout(Request $request)
-    // {
-    //     Auth::logout(); 
+    public function logout(Request $request)
+    {
+        Auth::logout(); 
 
-    //     $request->session()->invalidate(); 
+        $request->session()->invalidate(); 
 
-    //     $request->session()->regenerateToken(); 
+        $request->session()->regenerateToken(); 
 
-    //     return redirect()->route('auth.dashboard_user'); 
-    // }
+        return redirect()->route('auth.dashboard_user'); 
+    }
     // xử lý quên mật khẩu email
 
     // public function sendResetLinkEmail(Request $request)

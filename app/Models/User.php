@@ -19,10 +19,17 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'fullname',
+        'birthday',
+        'gender',
+        'address',
+        'phone_number',
+        'license_number',
         'username',
         'email',
         'password',
         'is_verified',
+        'bus_route_id',
+        'role',
     ];
 
     /**
@@ -46,5 +53,10 @@ class User extends Authenticatable
             'password' => 'hashed',
             'is_verified' => 'boolean',
         ];
+    }
+
+    public function busRoute()
+    {
+        return $this->belongsTo(BusRoute::class);
     }
 }

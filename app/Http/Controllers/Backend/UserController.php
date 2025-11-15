@@ -17,4 +17,14 @@ class UserController extends Controller
     {
         return view('backend.user.user_map');
     }
+
+    public function show()
+    {
+        return view('backend.user.profile');
+    }
+
+    public function dashboard_user()
+    {
+        return view('backend.user.bus_dashboard');
+    }
 }

@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Đổi mật khẩu</title>
-  <link rel="stylesheet" href="backend/css/style_login.css">
+    <link rel="stylesheet" href="{{ asset('backend/css/style.css') }}">
 </head>
 <body class="forgot-page">
   <!-- Header -->
   <header class="header">
     <div class="logo">
       <a href="roles" class="logo-link">
-        <img src="backend/img/logo/logo.png" alt="BusGo HCM Logo">
+        <img src="{{ asset('backend/logo/logo.png') }}" alt="BusGo HCM Logo">
         <span>BusGo HCM</span>
       </a>
     </div>

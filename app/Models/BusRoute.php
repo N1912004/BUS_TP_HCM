@@ -2,20 +2,31 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class BusRoute extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-        'route_number',
-        'start_location',
-        'end_location',
-        'distance',
-        'duration',
-        'coords', // Add 'coords' to the fillable array
+        'ma_tuyen',
+        'diem_di',
+        'diem_den',
+        'ngay',
+        'thoi_gian_bat_dau',
+        'thoi_gian_ket_thuc',
+        'is_active',
+        'coords', // Add coords to fillable
     ];
 
     protected $casts = [
-        'coords' => 'array',
+        'coords' => 'array', // Cast coords to array
     ];
+
+    // Accessor to get the route name
+    public function getNameAttribute()
+    {
+        return $this->ma_tuyen . ' (' . $this->diem_di . ' - ' . $this->diem_den . ')';
+    }
 }
