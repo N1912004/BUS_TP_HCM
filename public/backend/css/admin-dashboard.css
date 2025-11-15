@@ -1,0 +1,69 @@
+/* Custom styles for admin dashboard widgets */
+.widget.style1 {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    color: #fff; /* Default text color for widgets */
+}
+
+.widget.style1 .row {
+    display: flex;
+    align-items: center;
+}
+
+.widget.style1 .col-xs-4 {
+    text-align: center;
+}
+
+.widget.style1 .col-xs-8 {
+    text-align: right;
+}
+
+.widget.style1 i {
+    font-size: 50px;
+    line-height: 1;
+}
+
+.widget.style1 span {
+    font-size: 16px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.widget.style1 h2 {
+    font-size: 30px;
+    margin: 0;
+    font-weight: bold;
+}
+
+/* Specific background colors */
+.widget.style1.navy-bg {
+    background-color: #1ab394; /* Greenish */
+}
+
+.widget.style1.lazur-bg {
+    background-color: #23c6c8; /* Light blue */
+}
+
+.widget.style1.yellow-bg {
+    background-color: #f8ac59; /* Orange/Yellow */
+}
+
+.widget.style1.red-bg {
+    background-color: #ed5565; /* Red */
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .widget.style1 .col-xs-4,
+    .widget.style1 .col-xs-8 {
+        width: 100%;
+        text-align: center;
+    }
+    .widget.style1 i {
+        margin-bottom: 10px;
+    }
+}

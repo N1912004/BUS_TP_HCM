@@ -6,7 +6,7 @@
   <title>{{ __('map_route.title') }}</title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="{{ asset('backend/user/style.css') }}" />
+  <link href="{{ asset('backend/user/style.css') }}" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
@@ -361,19 +361,56 @@
   <!-- HEADER -->
   <header class="busmap-header">
     <div class="header-top">
-      <div class="logo">
-        <img src="{{ asset('backend/img/logo/logo.png') }}" alt="BusMap" />
+      <div   class="logo">
+        <a href="{{ url()->current() }}" >
+        <img src="{{ asset('backend/logo/logo.png') }}" alt="BusMap">
+        </a>
         <span>{{ __('map_route.app_name') }}</span>
       </div>
 
       <div class="header-right">
         <div class="city-select" id="city-select-btn"><i class="fa fa-city"></i> <span id="current-city-display">{{ __('map_route.city_name') }}</span></div>
-        <div class="lang-select">
+    
+        <div class="lang-select dropdown-toggle" id="lang-dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
           <a href="{{ route('lang', 'vi') }}" class="{{ app()->getLocale() == 'vi' ? 'active' : '' }}">VI</a>
           <span>|</span>
           <a href="{{ route('lang', 'en') }}" class="{{ app()->getLocale() == 'en' ? 'active' : '' }}">EN</a>
+          {{-- <div class="user-dropdown dropdown-menu" id="user-dropdown" aria-labelledby="lang-dropdown-toggle">
+            <div class="dropdown-item user-info">
+              {{ Auth::user()->name ?? 'Guest' }}
+            </div>
+            <select id="user-select" class="dropdown-toggle icon-container">
+              <option value="profile">Thông tin tài khoản</option>
+              <option value="logout">Đăng xuất</option>
+            </select>
+            <form id="logout-form" action="{{ route('auth.logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+          </div> --}}
+          <!-- Avatar hoặc icon để mở menu -->
+<div class="dropdown">
+  <button 
+    class="btn btn-light dropdown-toggle d-flex align-items-center" 
+    type="button" 
+    id="user-dropdown-toggle" 
+    data-bs-toggle="dropdown" 
+    aria-expanded="false"
+  >
+<span>
+    {{ Auth::user()->name ?? 'Guest' }}
+</span>
+  </button>
+
+
+
+  {{-- <!-- Form ẩn để logout -->
+  <form id="logout-form" action="{{ route('auth.logout') }}" method="POST" style="display: none;">
+    @csrf
+  </form>
+</div> --}}
+
         </div>
-        <img src="https://i.pravatar.cc/40" alt="User" class="user-avatar" />
+        <img src="https://i.pravatar.cc/40" alt="User" class="user-avatar" /> <!-- Keep user avatar, but it's not the dropdown trigger -->
       </div>
     </div>
   </header>

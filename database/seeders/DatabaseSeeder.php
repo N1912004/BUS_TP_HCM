@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
         public function run(): void
     {
         $this->call([
-            BusSeeder::class,
             BusRouteSeeder::class,
+            BusSeeder::class,
             MetroBusRouteSeeder::class,
         ]);
 

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập - Người dùng</title>
-    <link rel="stylesheet" href="{{ asset('backend/css/style_login.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/style.css') }}">
     <!-- Font Awesome để dùng icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -13,11 +13,11 @@
 <body class="login-page">
     <!-- Header -->
     <header class="header">
-        <div class="logo">
-            <div class="logo-link">
-                <img src="{{ asset('backend/img/logo/logo.png') }}" alt="BusGo HCM Logo">
+        <div  class="logo">
+            <a href="roles"  class="logo-link">
+                <img src="{{ asset('backend/logo/logo.png') }}" alt="BusGo HCM Logo">
                 <span>BusGo HCM</span>
-            </div>
+            </a>
         </div>
     </header>
 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Bus; // Import the Bus model
+use App\Models\User; // Import the User model
+use App\Models\BusRoute; // Import the BusRoute model
 
 class BusController extends Controller
 {
@@ -22,7 +24,7 @@ class BusController extends Controller
         }
 
         $buses = $query->get(); // Fetch filtered buses from the database
-        return view('backend.bus.index', compact('buses')); // Pass buses to the view
+        return view('backend.buses.index', compact('buses')); // Pass buses to the view
     }
 
     public function getCoordinates($bus)
@@ -33,5 +35,24 @@ class BusController extends Controller
         $coordinates = $bus->coordinates;
 
         return response()->json($coordinates);
+    }
+
+    public function getRoutesByDriver($driverId)
+    {
+        // Extract only the numeric part of driverId
+        $numericDriverId = (int) $driverId;
+
+        $driver = User::with('busRoute')->find($numericDriverId);
+
+        if (!$driver) {
+            // Return 404 if the driver is not found
+            return response()->json(['message' => 'Driver not found'], 404);
+        }
+
+        // Assuming a driver has one busRoute
+        $routes = $driver->busRoute ? [$driver->busRoute] : [];
+
+        // Return 200 OK with routes (empty array if no route assigned)
+        return response()->json(['routes' => $routes], 200);
     }
 }
