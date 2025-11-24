@@ -63,7 +63,7 @@
 
         <div class="mb-3">
             <label for="coords" class="form-label">Tọa độ tuyến (JSON Array)</label>
-            <textarea class="form-control" id="coords" name="coords" rows="5">{{ old('coords', $route->coords ?? '') }}</textarea>
+            <textarea class="form-control" id="coords" name="coords" rows="5">{{ old('coords', isset($route->coords) ? (is_array($route->coords) || is_object($route->coords) ? json_encode($route->coords) : $route->coords) : '') }}</textarea>
             <small class="form-text text-muted">Nhập tọa độ dưới dạng JSON array, ví dụ: [[lat1, lng1], [lat2, lng2]]</small>
             <button type="button" id="generateCoordsBtn" class="btn btn-info btn-sm mt-2">Tạo tọa độ tự động</button>
         </div>

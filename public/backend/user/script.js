@@ -53,7 +53,8 @@ async function fetchBusRoutes() {
     }
     const data = await response.json();
     console.log('Fetched bus routes data:', data); // Log the fetched data
-    busRoutes = data; // Directly assign data for now
+    // Filter out "Tuyến Metro 1 Bến Thành - Suối Tiên"
+    busRoutes = data.filter(route => route.name !== 'Tuyến Metro 1 Bến Thành - Suối Tiên');
 
     // Ensure map is initialized before rendering list and drawing polylines
     initializeMap();
@@ -150,7 +151,10 @@ function renderNearbyRoutesList(routes) {
         <div class="icon"><i class="fas fa-bus"></i></div>
             <div class="details">
                 <div class="route-number">${r.name}</div>
-                <div class="route-info">${r.desc}</div>
+            </div>
+            <div class="price" id="price-${r.id}"><i class="fas fa-dollar-sign"></i> ${window.translations['map_route.calculating']}</div>
+            <div class="details">
+                <div class="route-number">${r.name}</div>
             </div>
             <div class="price" id="price-${r.id}"><i class="fas fa-dollar-sign"></i> ${window.translations['map_route.calculating']}</div>
         `;
@@ -764,6 +768,7 @@ function showRouteCard(route) {
                         showLocationMessage(window.translations['map_route.error_getting_address'], true);
                     }
                 }, (error) => {
+                    console.error('Geolocation error object (locateStartPointBtn):', error); // Added this line
                     let errorMessage = window.translations['map_route.location_error'];
                     switch(error.code) {
                         case error.PERMISSION_DENIED:
@@ -862,6 +867,7 @@ function showRouteCard(route) {
                         item.classList.remove('selected');
                     });
                 }, (error) => {
+                    console.error('Geolocation error object (locateBtn):', error); // Added this line
                     let errorMessage = window.translations['map_route.location_error'];
                     switch(error.code) {
                         case error.PERMISSION_DENIED:

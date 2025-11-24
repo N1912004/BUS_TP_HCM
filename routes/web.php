@@ -27,7 +27,7 @@ Route::get('/map-route', function () {
     return view('backend.user.map_route');
 })->middleware('auth')->name('user.map_route');
 //đặt route nay có cái tên là auth.login
-Route:: get('/roles', [AuthController::class, 'index'])->name('auth.roles');
+Route::get('/roles', [AuthController::class, 'index'])->name('auth.roles');
 
 // 🔹 Login cho user (guard web)
 Route::get('/loginuser', [AuthController::class, 'showLoginUserForm'])->name('auth.loginuser_get');
@@ -46,7 +46,10 @@ Route::get('/sub', [AuthController::class, 'dashboard_sub'])->name('auth.dashboa
 Route::get('/dashboard/user', [UserController::class, 'dashboard_user'])->middleware('auth')->name('auth.dashboard_user');
 
 
-Route::get('/reset_pass', [AuthController::class, 'dashboard_reset_pass'])->name('auth.dashboard_reset_pass');
+Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
+Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 //Trang admin
 // 🔹 Login cho admin (guard admin)
 Route::get('/admin/login', [AuthController::class, 'showLoginAdminForm'])->name('auth.loginadmin_get');
@@ -65,9 +68,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 
 
-//Xử lý quên mật khẩu email 
-// web.php
-Route::post('/password/email', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
 
 Route::get('/ping', function () {
     return response()->json(['message' => 'pong']);
@@ -96,7 +96,7 @@ Route::get('/bus-map', function () {
 Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
 use App\Http\Controllers\Admin\TicketController; // Import the TicketController
 
-Route::get('/profile', [UserController::class, 'show'])->name('profile.show');
+Route::get('/profile', [UserController::class, 'show'])->name('user.profile');
 // routes/web.php
 use App\Http\Controllers\Admin\RouteController;
 use App\Http\Controllers\Admin\DriverController; // Import the DriverController

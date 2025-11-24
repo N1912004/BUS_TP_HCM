@@ -956,3 +956,92 @@ body {
   font-size: 15px;
   background-color: #fff;
 }
+
+/* Styles from map_route.blade.php */
+.search-bar {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    padding: 8px 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.search-bar input {
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    padding: 5px;
+    font-size: 16px;
+}
+.search-bar .search-icon {
+    margin-right: 10px;
+    color: #888;
+}
+.bus-route-list {
+    list-style: none;
+    padding: 0;
+    overflow-x: hidden;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.bus-route-item {
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    padding: 10px;
+    box-shadow: none;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    flex-shrink: 1;
+    z-index: 1;
+}
+.bus-route-item .icon {
+    font-size: 24px;
+    color: #007bff;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+.bus-route-item .details {
+    flex-grow: 1;
+    min-width: 0;
+    padding-right: 5px;
+    flex-shrink: 1;
+}
+.bus-route-item .route-number {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #333;
+    margin-bottom: 5px;
+}
+.bus-route-item .route-info {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.bus-route-item .route-time,
+.bus-route-item .route-price {
+    font-size: 0.85em;
+    color: #888;
+    display: flex;
+    align-items: center;
+}
+.bus-route-item .route-time i,
+.bus-route-item .route-price i {
+    margin-right: 5px;
+}
+.bus-route-item .price {
+    font-weight: bold;
+    color: #28a745;
+    margin-left: auto;
+    font-size: 1.1em;
+}

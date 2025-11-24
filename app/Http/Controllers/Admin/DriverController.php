@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Route;
+use App\Models\BusRoute;
 use App\Models\Bus; // Import the Bus model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -14,10 +14,10 @@ class DriverController extends Controller
     public function index()
     {
         $drivers = User::where('role', 'driver')->with('busRoute')->get();
-        $routes = Route::all();
+        $routes = BusRoute::all();
         
         // Fetch statistics
-        $totalRoutes = Route::count();
+        $totalRoutes = BusRoute::count();
         $totalBuses = Bus::count();
         $totalUsers = User::count();
         $totalDrivers = User::where('role', 'driver')->count();
@@ -35,7 +35,7 @@ class DriverController extends Controller
     public function create()
     {
         // Fetch statistics for the layout
-        $totalRoutes = Route::count();
+        $totalRoutes = BusRoute::count();
         $totalBuses = Bus::count();
         $totalUsers = User::count();
         $totalDrivers = User::where('role', 'driver')->count();
@@ -88,7 +88,7 @@ class DriverController extends Controller
     public function edit(User $driver)
     {
         // Fetch statistics for the layout
-        $totalRoutes = Route::count();
+        $totalRoutes = BusRoute::count();
         $totalBuses = Bus::count();
         $totalUsers = User::count();
         $totalDrivers = User::where('role', 'driver')->count();
@@ -142,7 +142,7 @@ class DriverController extends Controller
     public function show(User $driver)
     {
         // Fetch statistics for the layout
-        $totalRoutes = Route::count();
+        $totalRoutes = BusRoute::count();
         $totalBuses = Bus::count();
         $totalUsers = User::count();
         $totalDrivers = User::where('role', 'driver')->count();

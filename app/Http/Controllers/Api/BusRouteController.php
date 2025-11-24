@@ -22,11 +22,11 @@ class BusRouteController extends Controller
 
             return [
                 'id' => $route->id,
-                'route_number' => $route->route_number,
-                'origin' => $route->start_location,
-                'destination' => $route->end_location,
-                'name' => ($route->route_number == 'Metro 1') ? __('map_route.metro_line') . ' 1' : ((string)$route->route_number === '0' ? __('map_route.route_number') . ' 0' : __('map_route.route_number') . ' ' . $route->route_number),
-                'desc' => $route->start_location . ' - ' . $route->end_location,
+                'route_number' => $route->ma_tuyen,
+                'origin' => __($route->diem_di),
+                'destination' => __($route->diem_den),
+                'name' => ($route->ma_tuyen == 'Metro 1') ? __('map_route.metro_line') . ' 1' . ' ' . __($route->diem_di) . ' - ' . __($route->diem_den) : ((string)$route->ma_tuyen === '0' ? __('map_route.route_number') . ' 0' : __('map_route.route_number') . ' ' . $route->ma_tuyen),
+                'desc' => __($route->diem_di) . ' - ' . __($route->diem_den),
                 'time' => '05:00 - 22:00', // Assuming time is not stored in DB yet
                 'price' => '20,000 VNĐ', // Assuming price is not stored in DB yet
                 'coords' => $coords, // Use actual coords from DB, defaulting to empty array if null
@@ -87,32 +87,47 @@ class BusRouteController extends Controller
         // If 'stations' is a relationship, you'd do $route->stations->pluck('name').
         // If 'station_names' is a JSON column, you'd do $route->station_names.
 
-        // For demonstration, let's return a generic list or specific for Metro 1 if ID matches.
         $stations = [];
-        if ($route->route_number == 'Metro 1') { // Example for Metro Line 1
+        $routeCoords = $route->coords ?? [];
+
+        if ($route->ma_tuyen == 'Metro 1') { // Example for Metro Line 1
             $stations = [
                 ['name' => __('map_route.station_ben_thanh'), 'latitude' => 10.775843, 'longitude' => 106.701755],
                 ['name' => __('map_route.station_city_theater'), 'latitude' => 10.779483, 'longitude' => 106.703000],
                 ['name' => __('map_route.station_ba_son'), 'latitude' => 10.787000, 'longitude' => 106.708000],
-                // ... add more stations with coords if available
             ];
+        } else if (!empty($routeCoords) && is_array($routeCoords)) {
+            // If coords are available, use them to generate "stations"
+            // For simplicity, we'll take a few points along the route as "stations"
+            // In a real app, these would be actual bus stops from a related table
+            $numCoords = count($routeCoords);
+            if ($numCoords > 0) {
+                $stations[] = ['name' => $route->diem_di . ' (' . __('map_route.start_point_label') . ')', 'latitude' => $routeCoords[0][0], 'longitude' => $routeCoords[0][1]];
+                if ($numCoords > 1) {
+                    // Add intermediate points as generic "stops"
+                    for ($i = 1; $i < $numCoords - 1; $i += floor($numCoords / 3)) { // Take a few intermediate points
+                        $stations[] = ['name' => __('map_route.intermediate_stop') . ' ' . ($i + 1), 'latitude' => $routeCoords[$i][0], 'longitude' => $routeCoords[$i][1]];
+                    }
+                    $stations[] = ['name' => $route->diem_den . ' (' . __('map_route.end_point_label') . ')', 'latitude' => $routeCoords[$numCoords - 1][0], 'longitude' => $routeCoords[$numCoords - 1][1]];
+                }
+            }
         } else {
-            // For other routes, return a generic placeholder or an empty array
+            // Fallback if no coords are available
             $stations = [
-                ['name' => $route->start_location . ' (' . __('map_route.start_point_label') . ')', 'latitude' => null, 'longitude' => null],
-                ['name' => $route->end_location . ' (' . __('map_route.end_point_label') . ')', 'latitude' => null, 'longitude' => null],
+                ['name' => $route->diem_di . ' (' . __('map_route.start_point_label') . ')', 'latitude' => null, 'longitude' => null],
+                ['name' => $route->diem_den . ' (' . __('map_route.end_point_label') . ')', 'latitude' => null, 'longitude' => null],
             ];
         }
 
 
-        $routeName = ($route->route_number == 'Metro 1') ? __('map_route.metro_line') . ' 1' : __('map_route.route_number') . ' ' . $route->route_number;
+        $routeName = ($route->ma_tuyen == 'Metro 1') ? __('map_route.metro_line') . ' 1' : __('map_route.route_number') . ' ' . $route->ma_tuyen;
 
         return response()->json([
             'id' => $route->id,
             'name' => $routeName,
             'stations' => $stations,
-            'from' => $route->start_location,
-            'to' => $route->end_location,
+            'from' => $route->diem_di,
+            'to' => $route->diem_den,
         ]);
     }
 
@@ -157,7 +172,7 @@ class BusRouteController extends Controller
 
         return response()->json([
             'route_id' => $route->id,
-            'route_name' => $route->name, // Assuming BusRoute model has a 'name' attribute
+            'route_name' => $route->ma_tuyen, // Assuming BusRoute model has a 'name' attribute
             'schedule' => $schedule,
         ]);
     }
@@ -203,11 +218,11 @@ class BusRouteController extends Controller
             if ($isNearby) {
                 $nearbyBusRoutes[] = [
                     'id' => $route->id,
-                    'route_number' => $route->route_number,
-                    'origin' => $route->start_location,
-                    'destination' => $route->end_location,
-                    'name' => ($route->route_number == 'Metro 1') ? __('map_route.metro_line') . ' 1' : ((string)$route->route_number === '0' ? __('map_route.route_number') . ' 0' : __('map_route.route_number') . ' ' . $route->route_number),
-                    'desc' => $route->start_location . ' - ' . $route->end_location,
+                    'route_number' => $route->ma_tuyen,
+                    'origin' => __($route->diem_di),
+                    'destination' => __($route->diem_den),
+                    'name' => ($route->ma_tuyen == 'Metro 1') ? __('map_route.metro_line') . ' 1' : ((string)$route->ma_tuyen === '0' ? __('map_route.route_number') . ' 0' : __('map_route.route_number') . ' ' . $route->ma_tuyen),
+                    'desc' => __($route->diem_di) . ' - ' . __($route->diem_den),
                     'time' => '05:00 - 22:00',
                     'price' => '20,000 VNĐ',
                     'coords' => $coords,

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Route; // Assuming Route model is used for general route info, though BusRoute is for specific bus routes
 use App\Models\Bus; // Import the Bus model for statistics
 use App\Models\BusRoute; // Import the BusRoute model
 use Illuminate\Http\Request;
@@ -15,10 +14,10 @@ class AssistantController extends Controller
     public function index()
     {
         $assistants = User::where('role', 'assistant')->with('busRoute')->get();
-        $routes = Route::all(); // For general route information if needed in the index view
+        $routes = BusRoute::all(); // For general route information if needed in the index view
 
         // Fetch statistics for the layout
-        $totalRoutes = Route::count();
+        $totalRoutes = BusRoute::count();
         $totalBuses = Bus::count();
         $totalUsers = User::count();
         $totalDrivers = User::where('role', 'driver')->count();
@@ -39,7 +38,7 @@ class AssistantController extends Controller
     public function create()
     {
         // Fetch statistics for the layout
-        $totalRoutes = Route::count();
+        $totalRoutes = BusRoute::count();
         $totalBuses = Bus::count();
         $totalUsers = User::count();
         $totalDrivers = User::where('role', 'driver')->count();
@@ -90,7 +89,7 @@ class AssistantController extends Controller
     public function edit(User $assistant)
     {
         // Fetch statistics for the layout
-        $totalRoutes = Route::count();
+        $totalRoutes = BusRoute::count();
         $totalBuses = Bus::count();
         $totalUsers = User::count();
         $totalDrivers = User::where('role', 'driver')->count();
@@ -142,7 +141,7 @@ class AssistantController extends Controller
     public function show(User $assistant)
     {
         // Fetch statistics for the layout
-        $totalRoutes = Route::count();
+        $totalRoutes = BusRoute::count();
         $totalBuses = Bus::count();
         $totalUsers = User::count();
         $totalDrivers = User::where('role', 'driver')->count();

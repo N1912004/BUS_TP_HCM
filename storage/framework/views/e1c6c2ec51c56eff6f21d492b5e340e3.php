@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{{ __('map_route.title') }}</title>
+  <title><?php echo e(__('map_route.title')); ?></title>
 
   <!-- CSS -->
-  <link href="{{ asset('backend/user/style.css') }}" rel="stylesheet">
+  <link href="<?php echo e(asset('backend/user/style.css')); ?>" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
@@ -362,19 +362,19 @@
   <header class="busmap-header">
     <div class="header-top">
       <div   class="logo">
-        <a href="{{ url()->current() }}" >
-        <img src="{{ asset('backend/logo/logo.png') }}" alt="BusMap">
+        <a href="<?php echo e(url()->current()); ?>" >
+        <img src="<?php echo e(asset('backend/logo/logo.png')); ?>" alt="BusMap">
         </a>
-        <span>{{ __('map_route.app_name') }}</span>
+        <span><?php echo e(__('map_route.app_name')); ?></span>
       </div>
 
       <div class="header-right">
-        <div class="city-select" id="city-select-btn"><i class="fa fa-city"></i> <span id="current-city-display">{{ __('map_route.city_name') }}</span></div>
+        <div class="city-select" id="city-select-btn"><i class="fa fa-city"></i> <span id="current-city-display"><?php echo e(__('map_route.city_name')); ?></span></div>
     
         <div class="lang-select dropdown-toggle" id="lang-dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          <a href="{{ route('lang', 'vi') }}" class="{{ app()->getLocale() == 'vi' ? 'active' : '' }}">VI</a>
+          <a href="<?php echo e(route('lang', 'vi')); ?>" class="<?php echo e(app()->getLocale() == 'vi' ? 'active' : ''); ?>">VI</a>
           <span>|</span>
-          <a href="{{ route('lang', 'en') }}" class="{{ app()->getLocale() == 'en' ? 'active' : '' }}">EN</a>
+          <a href="<?php echo e(route('lang', 'en')); ?>" class="<?php echo e(app()->getLocale() == 'en' ? 'active' : ''); ?>">EN</a>
         </div>
         <button 
             class="btn btn-light d-flex align-items-center" 
@@ -382,7 +382,8 @@
             onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
           >
             <span>
-                {{ Auth::user()-> username?? 'Guest' }}
+                <?php echo e(Auth::user()-> username?? 'Guest'); ?>
+
             </span>
             <i class="fas fa-sign-out-alt ms-2"></i>
           </button>
@@ -390,13 +391,13 @@
       </div>
     </div>
   </header>
-  <form id="logout-form" action="{{ route('auth.logout') }}" method="POST" style="display: none;">
-    @csrf
+  <form id="logout-form" action="<?php echo e(route('auth.logout')); ?>" method="POST" style="display: none;">
+    <?php echo csrf_field(); ?>
   </form>
   <div class="header-tabs">
-    <button class="tab active" id="tab-search" data-tab="search-routes"><i class="fa fa-search"></i> {{ __('map_route.search') }}</button>
-    <button class="tab" id="tab-route" data-tab="find-route"><i class="fa fa-route"></i> {{ __('map_route.find_route') }}</button>
-    <button class="tab" id="tab-nearby-stops" data-tab="nearby-routes"><i class="fa fa-map-marker-alt"></i> {{ __('map_route.nearby_routes') }}</button>
+    <button class="tab active" id="tab-search" data-tab="search-routes"><i class="fa fa-search"></i> <?php echo e(__('map_route.search')); ?></button>
+    <button class="tab" id="tab-route" data-tab="find-route"><i class="fa fa-route"></i> <?php echo e(__('map_route.find_route')); ?></button>
+    <button class="tab" id="tab-nearby-stops" data-tab="nearby-routes"><i class="fa fa-map-marker-alt"></i> <?php echo e(__('map_route.nearby_routes')); ?></button>
     <button class="tab" id="toggle-sidebar"><i class="fa fa-bars"></i></button>
   </div>
   <!-- BODY -->
@@ -406,39 +407,40 @@
       <div class="tab-content active" id="search-routes">
         <div class="search-bar">
             <i class="fas fa-search search-icon"></i>
-            <input type="text" id="bus-route-search-input" placeholder="{{ __('map_route.search_bus_route') }}">
+            <input type="text" id="bus-route-search-input" placeholder="<?php echo e(__('map_route.search_bus_route')); ?>">
         </div>
 
         <ul class="bus-route-list" id="list-container">
-            {{-- Bus route items will be dynamically loaded here --}}
+            
         </ul>
       </div>
 
       <!-- TÌM ĐƯỜNG -->
       <div class="tab-content hidden" id="find-route">
-        <h3>{{ __('map_route.find_route') }}</h3>
+        <h3><?php echo e(__('map_route.find_route')); ?></h3>
         <div class="find-route-inputs">
           <div class="input-with-icon">
-            <input type="text" id="start-point" placeholder="{{ __('map_route.start_point') }}" />
-            <button id="locate-start-point-btn" class="icon-button" title="{{ __('map_route.get_current_location') }}"><i class="fas fa-crosshairs"></i></button>
+            <input type="text" id="start-point" placeholder="<?php echo e(__('map_route.start_point')); ?>" />
+            <button id="locate-start-point-btn" class="icon-button" title="<?php echo e(__('map_route.get_current_location')); ?>"><i class="fas fa-crosshairs"></i></button>
           </div>
-          <input type="text" id="end-point" placeholder="{{ __('map_route.end_point') }}" />
-          <button id="find-route-btn"><i class="fa fa-magnifying-glass"></i> {{ __('map_route.find_route_button') }}</button>
+          <input type="text" id="end-point" placeholder="<?php echo e(__('map_route.end_point')); ?>" />
+          <button id="find-route-btn"><i class="fa fa-magnifying-glass"></i> <?php echo e(__('map_route.find_route_button')); ?></button>
         </div>
-        <p><i>{{ __('map_route.location_note') }}</i></p>
+        <p><i><?php echo e(__('map_route.location_note')); ?></i></p>
       </div>
 
       <!-- TUYẾN GẦN ĐÂY -->
       <div class="tab-content hidden" id="nearby-routes">
-        <h3>{{ __('map_route.nearby_bus_routes') }}</h3>
-        <p><i>{{ __('map_route.nearby_routes_note') }}</i></p>
+        <h3><?php echo e(__('map_route.nearby_bus_routes')); ?></h3>
+        <p><i><?php echo e(__('map_route.nearby_routes_note')); ?></i></p>
         <ul class="bus-route-list" id="nearby-routes-list">
-          {{-- Nearby bus routes will be dynamically loaded here --}}
+          
         </ul>
       </div>
 
       <div class="sidebar-footer">
-        © 2025 {{ __('map_route.footer_text') }}
+        © 2025 <?php echo e(__('map_route.footer_text')); ?>
+
       </div>
     </aside>
 
@@ -466,10 +468,10 @@
         <button class="close-card" id="close-card"><i class="fa fa-times"></i></button>
         <h3 id="route-card-title"></h3>
         <p id="route-card-desc"></p>
-        <p><strong>{{ __('map_route.from') }}:</strong> <span id="route-card-from"></span></p>
-        <p><strong>{{ __('map_route.to') }}:</strong> <span id="route-card-to"></span></p>
-        <p><strong>{{ __('map_route.distance') }}:</strong> <span id="route-card-distance">{{ __('map_route.calculating') }}</span></p>
-        <p><strong>{{ __('map_route.price') }}:</strong> <span id="route-card-price">{{ __('map_route.calculating') }}</span></p>
+        <p><strong><?php echo e(__('map_route.from')); ?>:</strong> <span id="route-card-from"></span></p>
+        <p><strong><?php echo e(__('map_route.to')); ?>:</strong> <span id="route-card-to"></span></p>
+        <p><strong><?php echo e(__('map_route.distance')); ?>:</strong> <span id="route-card-distance"><?php echo e(__('map_route.calculating')); ?></span></p>
+        <p><strong><?php echo e(__('map_route.price')); ?>:</strong> <span id="route-card-price"><?php echo e(__('map_route.calculating')); ?></span></p>
       </div>
       <button class="locate-btn" id="locate-btn"><i class="fa fa-location-crosshairs"></i></button>
       <div id="location-message" class="hidden" style="position: absolute; bottom: 70px; right: 20px; background-color: rgba(255, 0, 0, 0.7); color: white; padding: 10px; border-radius: 5px; z-index: 1000;"></div>
@@ -481,40 +483,41 @@
   <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
   <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
   <script>
-    window.AppBaseUrl = "{{ url('/') }}";
+    window.AppBaseUrl = "<?php echo e(url('/')); ?>";
     window.translations = {
-        'map_route.route_number': '{{ __("map_route.route_number") }}',
-        'map_route.metro_line': '{{ __("map_route.metro_line") }}',
-        'map_route.calculating': '{{ __("map_route.calculating") }}',
-        'map_route.no_nearby_routes': '{{ __("map_route.no_nearby_routes") }}',
-        'map_route.no_bus_stops': '{{ __("map_route.no_bus_stops") }}',
-        'map_route.cannot_load_bus_stops': '{{ __("map_route.cannot_load_bus_stops") }}',
-        'map_route.address_unknown': '{{ __("map_route.address_unknown") }}',
-        'map_route.browser_no_geolocation': '{{ __("map_route.browser_no_geolocation") }}',
-        'map_route.getting_location': '{{ __("map_route.getting_location") }}',
-        'map_route.location_found': '{{ __("map_route.location_found") }}',
-        'map_route.cannot_find_address': '{{ __("map_route.cannot_find_address") }}',
-        'map_route.location_error': '{{ __("map_route.location_error") }}',
-        'map_route.permission_denied': '{{ __("map_route.permission_denied") }}',
-        'map_route.position_unavailable': '{{ __("map_route.position_unavailable") }}',
-        'map_route.timeout': '{{ __("map_route.timeout") }}',
-        'map_route.unknown_error': '{{ __("map_route.unknown_error") }}',
-        'map_route.your_location': '{{ __("map_route.your_location") }}',
-        'map_route.switched_to_city': '{{ __("map_route.switched_to_city") }}',
-        'map_route.invalid_choice': '{{ __("map_route.invalid_choice") }}',
-        'map_route.enter_start_end_points': '{{ __("map_route.enter_start_end_points") }}',
-        'map_route.error_finding_route': '{{ __("map_route.error_finding_route") }}',
-        'map_route.no_coords_for_route': '{{ __("map_route.no_coords_for_route") }}',
-        'map_route.error_displaying_route': '{{ __("map_route.error_displaying_route") }}',
-        'map_route.route_not_found': '{{ __("map_route.route_not_found") }}',
-        'map_route.missing_origin_destination': '{{ __("map_route.missing_origin_destination") }}',
-        'map_route.cannot_display_route_missing_points': '{{ __("map_route.cannot_display_route_missing_points") }}',
-        'map_route.error_geocoding_routing': '{{ __("map_route.error_geocoding_routing") }}',
-        'map_route.no_nearby_bus_stops': '{{ __("map_route.no_nearby_bus_stops") }}',
-        'map_route.cannot_load_nearby_bus_stops': '{{ __("map_route.cannot_load_nearby_bus_stops") }}',
-        'map_route.select_city': '{{ __("map_route.select_city") }}'
+        'map_route.route_number': '<?php echo e(__("map_route.route_number")); ?>',
+        'map_route.metro_line': '<?php echo e(__("map_route.metro_line")); ?>',
+        'map_route.calculating': '<?php echo e(__("map_route.calculating")); ?>',
+        'map_route.no_nearby_routes': '<?php echo e(__("map_route.no_nearby_routes")); ?>',
+        'map_route.no_bus_stops': '<?php echo e(__("map_route.no_bus_stops")); ?>',
+        'map_route.cannot_load_bus_stops': '<?php echo e(__("map_route.cannot_load_bus_stops")); ?>',
+        'map_route.address_unknown': '<?php echo e(__("map_route.address_unknown")); ?>',
+        'map_route.browser_no_geolocation': '<?php echo e(__("map_route.browser_no_geolocation")); ?>',
+        'map_route.getting_location': '<?php echo e(__("map_route.getting_location")); ?>',
+        'map_route.location_found': '<?php echo e(__("map_route.location_found")); ?>',
+        'map_route.cannot_find_address': '<?php echo e(__("map_route.cannot_find_address")); ?>',
+        'map_route.location_error': '<?php echo e(__("map_route.location_error")); ?>',
+        'map_route.permission_denied': '<?php echo e(__("map_route.permission_denied")); ?>',
+        'map_route.position_unavailable': '<?php echo e(__("map_route.position_unavailable")); ?>',
+        'map_route.timeout': '<?php echo e(__("map_route.timeout")); ?>',
+        'map_route.unknown_error': '<?php echo e(__("map_route.unknown_error")); ?>',
+        'map_route.your_location': '<?php echo e(__("map_route.your_location")); ?>',
+        'map_route.switched_to_city': '<?php echo e(__("map_route.switched_to_city")); ?>',
+        'map_route.invalid_choice': '<?php echo e(__("map_route.invalid_choice")); ?>',
+        'map_route.enter_start_end_points': '<?php echo e(__("map_route.enter_start_end_points")); ?>',
+        'map_route.error_finding_route': '<?php echo e(__("map_route.error_finding_route")); ?>',
+        'map_route.no_coords_for_route': '<?php echo e(__("map_route.no_coords_for_route")); ?>',
+        'map_route.error_displaying_route': '<?php echo e(__("map_route.error_displaying_route")); ?>',
+        'map_route.route_not_found': '<?php echo e(__("map_route.route_not_found")); ?>',
+        'map_route.missing_origin_destination': '<?php echo e(__("map_route.missing_origin_destination")); ?>',
+        'map_route.cannot_display_route_missing_points': '<?php echo e(__("map_route.cannot_display_route_missing_points")); ?>',
+        'map_route.error_geocoding_routing': '<?php echo e(__("map_route.error_geocoding_routing")); ?>',
+        'map_route.no_nearby_bus_stops': '<?php echo e(__("map_route.no_nearby_bus_stops")); ?>',
+        'map_route.cannot_load_nearby_bus_stops': '<?php echo e(__("map_route.cannot_load_nearby_bus_stops")); ?>',
+        'map_route.select_city': '<?php echo e(__("map_route.select_city")); ?>'
     };
   </script>
-  <script src="{{ asset('backend/user/script.js') }}?v={{ time() }}"></script>
+  <script src="<?php echo e(asset('backend/user/script.js')); ?>?v=<?php echo e(time()); ?>"></script>
 </body>
 </html>
+<?php /**PATH /Applications/XAMPP/xamppfiles/htdocs/laravelversion1.com/resources/views/backend/user/map_route.blade.php ENDPATH**/ ?>

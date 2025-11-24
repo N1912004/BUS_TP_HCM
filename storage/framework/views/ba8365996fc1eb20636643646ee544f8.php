@@ -1,24 +1,16 @@
 <?php $__env->startSection('content'); ?>
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="page-title mb-0">Chỉnh sửa Phụ Xe</h4>
+    <h4 class="page-title mb-0">Chỉnh sửa Tài xế</h4>
     <div>
-        <a href="<?php echo e(route('admin.assistants.index')); ?>" class="btn btn-secondary">
+        <a href="<?php echo e(route('admin.drivers.index')); ?>" class="btn btn-secondary">
             <i class="fa fa-arrow-left me-2"></i> Quay lại danh sách
         </a>
     </div>
 </div>
 
-<?php if(session('success')): ?>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <?php echo e(session('success')); ?>
-
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-<?php endif; ?>
-
 <div class="card">
     <div class="card-body">
-        <form action="<?php echo e(route('admin.assistants.update', $assistant->id)); ?>" method="POST">
+        <form action="<?php echo e(route('admin.drivers.update', $driver->id)); ?>" method="POST">
             <?php echo csrf_field(); ?>
             <?php echo method_field('PUT'); ?>
             
@@ -32,7 +24,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                       id="fullname" name="fullname" value="<?php echo e(old('fullname', $assistant->fullname)); ?>" required>
+                       id="fullname" name="fullname" value="<?php echo e($driver->fullname ?? old('fullname')); ?>" required>
                 <?php $__errorArgs = ['fullname'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -56,7 +48,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                       id="birthday" name="birthday" value="<?php echo e(old('birthday', $assistant->birthday ? \Carbon\Carbon::parse($assistant->birthday)->format('Y-m-d') : '')); ?>" required>
+                       id="birthday" name="birthday" value="<?php echo e($driver->birthday ?? old('birthday')); ?>" required>
                 <?php $__errorArgs = ['birthday'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -81,8 +73,8 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" id="gender" name="gender" required>
                     <option value="">-- Chọn giới tính --</option>
-                    <option value="Nam" <?php echo e(old('gender', $assistant->gender) == 'Nam' ? 'selected' : ''); ?>>Nam</option>
-                    <option value="Nữ" <?php echo e(old('gender', $assistant->gender) == 'Nữ' ? 'selected' : ''); ?>>Nữ</option>
+                    <option value="Nam" <?php echo e(($driver->gender ?? old('gender')) == 'Nam' ? 'selected' : ''); ?>>Nam</option>
+                    <option value="Nữ" <?php echo e(($driver->gender ?? old('gender')) == 'Nữ' ? 'selected' : ''); ?>>Nữ</option>
                 </select>
                 <?php $__errorArgs = ['gender'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -107,7 +99,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                       id="address" name="address" value="<?php echo e(old('address', $assistant->address)); ?>" required>
+                       id="address" name="address" value="<?php echo e($driver->address ?? old('address')); ?>" required>
                 <?php $__errorArgs = ['address'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -131,8 +123,56 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                       id="phone_number" name="phone_number" value="<?php echo e(old('phone_number', $assistant->phone_number)); ?>" required>
+                       id="phone_number" name="phone_number" value="<?php echo e($driver->phone_number ?? old('phone_number')); ?>" required>
                 <?php $__errorArgs = ['phone_number'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+            </div>
+
+            
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                       id="email" name="email" value="<?php echo e($driver->email ?? old('email')); ?>" required>
+                <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+            </div>
+
+            
+            <div class="mb-3">
+                <label for="license_number" class="form-label">Số bằng lái</label>
+                <input type="text" class="form-control <?php $__errorArgs = ['license_number'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                       id="license_number" name="license_number" value="<?php echo e($driver->license_number ?? old('license_number')); ?>" required>
+                <?php $__errorArgs = ['license_number'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -157,7 +197,7 @@ endif;
 unset($__errorArgs, $__bag); ?>" id="bus_route_id" name="bus_route_id" required>
                     <option value="">-- Chọn tuyến xe --</option>
                     <?php $__currentLoopData = $busRoutes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $route): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <option value="<?php echo e($route->id); ?>" <?php echo e(old('bus_route_id', $assistant->bus_route_id) == $route->id ? 'selected' : ''); ?>>
+                        <option value="<?php echo e($route->id); ?>" <?php echo e((($driver->bus_route_id ?? old('bus_route_id')) == $route->id) ? 'selected' : ''); ?>>
                             <?php echo e($route->ma_tuyen); ?> - <?php echo e($route->diem_di); ?> đến <?php echo e($route->diem_den); ?> (<?php echo e(\Carbon\Carbon::parse($route->thoi_gian_bat_dau)->format('H:i')); ?> - <?php echo e(\Carbon\Carbon::parse($route->thoi_gian_ket_thuc)->format('H:i')); ?>)
                         </option>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -185,7 +225,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                       id="username" name="username" value="<?php echo e(old('username', $assistant->username)); ?>" required>
+                       id="username" name="username" value="<?php echo e($driver->username ?? old('username')); ?>" required>
                 <?php $__errorArgs = ['username'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -199,11 +239,11 @@ unset($__errorArgs, $__bag); ?>
             </div>
 
             <button type="submit" class="btn btn-primary">
-                <i class="fa fa-save me-2"></i> Cập nhật Phụ Xe
+                <i class="fa fa-save me-2"></i> Cập nhật Tài xế
             </button>
         </form>
     </div>
 </div>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('backend.admin.index_admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /Applications/XAMPP/xamppfiles/htdocs/laravelversion1.com/resources/views/backend/admin/assistants/edit.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('backend.admin.index_admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /Applications/XAMPP/xamppfiles/htdocs/laravelversion1.com/resources/views/backend/admin/drivers/edit.blade.php ENDPATH**/ ?>

@@ -13,11 +13,19 @@ use App\Models\Bus; // Import the Bus model
 use App\Models\Admin; // Import the Admin model
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log; // Import the Log facade
+use Illuminate\Support\Facades\Password; // Import the Password facade
+use Illuminate\Auth\Events\PasswordReset; // Import the PasswordReset event
+use Illuminate\Validation\ValidationException; // Import ValidationException
 
 class AuthController extends Controller
 {
     // Xử lý phần đăng nhập cho user
     public function __construct() {}
+
+    public function showForgotPasswordForm()
+    {
+        return view('backend.auth.forgot_password');
+    }
     public function index()
     {
         return view('backend.auth.roles');
@@ -133,23 +141,69 @@ class AuthController extends Controller
         return redirect()->route('auth.dashboard_user'); 
     }
     // xử lý quên mật khẩu email
-
-    // public function sendResetLinkEmail(Request $request)
-    // {
-    //     $request->validate(['email' => 'required|email']);
-
-    //     // Dùng Laravel built-in để gửi link reset
-    //     $status = Password::sendResetLink(
-    //         $request->only('email')
-    //     );
-
-    //     return $status === Password::RESET_LINK_SENT
-    //         ? back()->with(['status' => __($status)])
-    //         : back()->withErrors(['email' => __($status)]);
-    // }
-
-    public function dashboard_reset_pass()
+    public function sendResetLinkEmail(Request $request)
     {
-        return view('backend.auth.reset_pass');
+        $request->validate(['email' => 'required|email']);
+
+        Log::info('Attempting to send password reset link for email: ' . $request->email);
+
+        // Dùng Laravel built-in để gửi link reset
+        $status = Password::broker()->sendResetLink(
+            $request->only('email')
+        );
+
+        Log::info('Password reset link sent status: ' . $status);
+
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with(['status' => __($status)])
+            : back()->withErrors(['email' => __($status)]);
+    }
+
+    public function showResetPasswordForm(Request $request, $token = null)
+    {
+        return view('backend.auth.reset_pass')->with(
+            ['token' => $token, 'email' => $request->email]
+        );
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:8',
+        ]);
+
+        Log::info('Attempting to reset password. Email: ' . $request->email . ', Token: ' . $request->token);
+
+        $status = Password::broker()->reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user) use ($request) {
+                // Log the user object immediately upon entering the callback
+                Log::info('Inside resetPassword callback. User object:', ['user' => $user, 'is_instance_of_User' => ($user instanceof User)]);
+
+                // Ensure $user is not null and is an instance of User before proceeding
+                if (!$user instanceof User) {
+                    Log::error('User not found or invalid in resetPassword callback for email: ' . $request->email . '. User value: ' . json_encode($user));
+                    return; // Exit the callback if user is not valid
+                }
+
+                // Break down chained calls to isolate the cause of "save() on null"
+                $user->password = Hash::make($request->password);
+                $user->setRememberToken(null);
+                $user->save();
+
+                event(new PasswordReset($user));
+                Log::info('Password successfully reset for user ID: ' . $user->id);
+            }
+        );
+
+        Log::info('Password reset status: ' . $status);
+
+        if ($status == Password::PASSWORD_RESET) {
+            return redirect()->route('auth.loginuser_get')->with('status', __($status));
+        }
+
+        return back()->withErrors(['email' => __($status)]);
     }
 }

@@ -58,7 +58,7 @@
                     </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <tr>
-                        <td colspan="5" class="text-center py-4 text-muted">Không có phụ xe nào được tìm thấy.</td>
+                        <td colspan="9" class="text-center py-4 text-muted">Không có phụ xe nào được tìm thấy.</td>
                     </tr>
                     <?php endif; ?>
                 </tbody>

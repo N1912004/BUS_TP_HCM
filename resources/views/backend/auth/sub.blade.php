@@ -15,7 +15,7 @@
     <header class="header">
         <div class="logo">
             <div href="roles"  class="logo-link">
-                <img src="{{ asset('public/backend/logo/logo.png') }}" alt="BusGo HCM Logo">
+                <img src="{{ asset('backend/logo/logo.png') }}" alt="BusGo HCM Logo">
                 <span>BusGo HCM</span>
             </div>
         </div>

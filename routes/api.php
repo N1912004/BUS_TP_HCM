@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Bus Routes API
 Route::apiResource('bus-routes', BusRouteController::class);
+Route::get('/bus-routes/{id}/stations', [BusRouteController::class, 'getStations']);
 
 // Bus Stops API
 Route::apiResource('busstops', BusStopController::class);

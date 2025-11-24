@@ -44,9 +44,17 @@ class RouteController extends Controller
             'diem_den'          => 'required|string|max:255',
             'thoi_gian_bat_dau' => 'required',
             'thoi_gian_ket_thuc' => 'required|after:thoi_gian_bat_dau',
+            'latitude_di'       => 'nullable|numeric',
+            'longitude_di'      => 'nullable|numeric',
+            'latitude_den'      => 'nullable|numeric',
+            'longitude_den'     => 'nullable|numeric',
+            'coords'            => 'nullable|json', // Add validation for coords
         ]);
 
         $busRoute = BusRoute::create($validated);
+        // If coords is provided and valid JSON, it will be cast automatically by the model
+        // if the $casts property is set in the BusRoute model.
+        // No explicit JSON encoding is needed here if the model handles casting.
 
         return redirect()->route('admin.routes.index')->with('success', 'Thêm tuyến xe ' . $busRoute->ma_tuyen . ' thành công!');
     }
@@ -68,7 +76,7 @@ class RouteController extends Controller
         $totalBuses = Bus::count();
         $totalUsers = User::count();
         $totalDrivers = Admin::where('role', 'driver')->count();
-        return view('backend.admin.routes.create', compact('route', 'totalRoutes', 'totalBuses', 'totalUsers', 'totalDrivers'));
+        return view('backend.admin.routes.edit', compact('route', 'totalRoutes', 'totalBuses', 'totalUsers', 'totalDrivers'));
     }
 
     public function update(Request $request, BusRoute $route)
@@ -79,9 +87,17 @@ class RouteController extends Controller
             'diem_den'          => 'required|string|max:255',
             'thoi_gian_bat_dau' => 'required',
             'thoi_gian_ket_thuc' => 'required|after:thoi_gian_bat_dau',
+            'latitude_di'       => 'nullable|numeric',
+            'longitude_di'      => 'nullable|numeric',
+            'latitude_den'      => 'nullable|numeric',
+            'longitude_den'     => 'nullable|numeric',
+            'coords'            => 'nullable|json', // Add validation for coords
         ]);
 
         $route->update($validated);
+        // If coords is provided and valid JSON, it will be cast automatically by the model
+        // if the $casts property is set in the BusRoute model.
+        // No explicit JSON encoding is needed here if the model handles casting.
 
         return redirect()->route('admin.routes.index')->with('success', 'Cập nhật tuyến xe ' . $route->ma_tuyen . ' thành công!');
     }
