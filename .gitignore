@@ -14,3 +14,4 @@ Homestead.yaml
 .DS_Store
 npm-debug.log
 yarn-error.log
+storage/framework/views/
